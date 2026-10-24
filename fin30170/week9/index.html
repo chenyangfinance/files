@@ -1,0 +1,778 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>VC, PE and FinTech Basics</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="color-scheme" content="light only">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap">
+<style>
+/* Light theme only. Radix UI Colors: slate (neutral), blue (VC), orange (PE), teal (FinTech), grass (gain), red (loss) */
+:root{
+  color-scheme:light;
+  --s1:#fcfcfd; --s2:#f9f9fb; --s3:#f0f0f3; --s4:#e8e8ec; --s5:#e0e1e6; --s6:#d9d9e0; --s7:#cdced6; --s8:#b9bbc6; --s9:#8b8d98; --s11:#60646c; --s12:#1c2024;
+  --b3:#e6f4fe; --b4:#d5efff; --b5:#c2e5ff; --b8:#5eb1ef; --b9:#0090ff; --b11:#0d74ce; --b12:#113264;
+  --o3:#fff1e7; --o5:#ffdcc3; --o8:#ec9455; --o9:#f76b15; --o11:#cc4e00; --o12:#582d1d;
+  --t3:#e0f8f3; --t9:#12a594; --t11:#008573; --t12:#0d3d38;
+  --g9:#46a758; --g11:#2a7e3b; --r9:#e5484d; --r11:#ce2c31;
+  /* Type scale: four sizes */
+  --f1:56px; --f2:30px; --f3:20px; --f4:15px;
+  --gap:40px;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (max-width:1100px){:root{--f1:44px;--f2:26px;--f3:19px;--f4:14px;--gap:28px}}
+@media (max-width:640px){:root{--f1:34px;--f2:23px;--f3:18px;--f4:14px;--gap:20px}}
+*{box-sizing:border-box}
+html{background:var(--s1)}
+body{margin:0;background:var(--s1);color:var(--s12);font:400 var(--f3)/1.6 var(--serif);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1680px;margin:0 auto;padding-block:32px 96px;padding-inline:clamp(0px,2.5vw,48px)}
+p{margin:0 0 14px}
+b,strong{font-weight:600}
+a{color:var(--b11);text-underline-offset:3px;text-decoration-thickness:.5px}
+.small{font:400 var(--f4)/1.5 var(--sans);color:var(--s11)}
+
+/* Masthead */
+.mast{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 var(--f4)/1.4 var(--sans);color:var(--s11);padding-bottom:10px;border-bottom:.5px solid var(--s12)}
+.hero{text-align:center;padding:40px 0 28px;border-bottom:.5px solid var(--s7)}
+h1{font:700 var(--f1)/1.08 var(--serif);margin:0 auto 14px;max-width:18em;text-wrap:balance;letter-spacing:-.01em}
+.dek{font:400 var(--f2)/1.35 var(--serif);color:var(--s11);margin:0 auto;max-width:34em;text-wrap:balance}
+nav{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 28px;padding:14px 0;border-bottom:.5px solid var(--s7)}
+nav a{font:500 var(--f4)/1.4 var(--sans);color:var(--s12);text-decoration:none}
+
+/* Sections */
+section{padding-top:56px}
+.kicker{font:600 var(--f4)/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;margin:0 0 10px}
+.k-vc{color:var(--b11)} .k-pe{color:var(--o11)} .k-ft{color:var(--t11)} .k-n{color:var(--s11)}
+h2{font:700 var(--f2)/1.2 var(--serif);margin:0 0 18px;text-wrap:balance}
+.sec-head{border-top:.5px solid var(--s12);padding-top:14px;margin-bottom:28px}
+.sec-head h2{margin:0}
+h3{font:600 var(--f3)/1.3 var(--sans);margin:0 0 8px;text-wrap:balance}
+h4{font:600 var(--f4)/1.4 var(--sans);margin:0 0 10px;letter-spacing:.04em;text-transform:uppercase;color:var(--s11)}
+
+/* 12-column grid */
+.g{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:40px;align-items:start}
+.g>*{min-width:0}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c9{grid-column:span 9}.c12{grid-column:span 12}
+.ruled{position:relative}
+.ruled::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--gap)/-2);border-left:.5px solid var(--s6)}
+.cols2{columns:2;column-gap:var(--gap);column-rule:.5px solid var(--s6)}
+.cols3{columns:3;column-gap:var(--gap);column-rule:.5px solid var(--s6)}
+.cols2 p,.cols3 p{break-inside:avoid-column}
+.drop::first-letter{float:left;font:700 calc(var(--f1) * 1.15)/.82 var(--serif);margin:6px 10px 0 0}
+@media (max-width:1100px){
+  .c3,.c4{grid-column:span 6}.c5,.c6,.c7,.c8,.c9{grid-column:span 12}
+  .cols3{columns:2}
+  .ruled.c5::before,.ruled.c6::before,.ruled.c7::before,.ruled.c8::before,.ruled.c9::before{display:none}
+}
+@media (max-width:700px){
+  .g{grid-template-columns:minmax(0,1fr);row-gap:32px}.g>*{grid-column:1/-1}
+  .ruled::before{display:none}
+  .cols2,.cols3{columns:1}
+}
+
+/* Figures */
+figure{margin:0}
+.fig-t{font:600 var(--f4)/1.4 var(--sans);margin:0 0 4px}
+.fig-s{font:400 var(--f4)/1.4 var(--sans);color:var(--s11);margin:0 0 14px}
+figcaption{font:400 var(--f4)/1.5 var(--sans);color:var(--s11);margin-top:12px;padding-top:8px;border-top:.5px solid var(--s6)}
+.fig-box{border-top:.5px solid var(--s12);padding-top:12px}
+.lbl{font:400 var(--f4)/1.4 var(--sans);color:var(--s11)}
+.lbl b{color:var(--s12)}
+
+/* Pull quote */
+.pull{font:400 var(--f2)/1.3 var(--serif);font-style:italic;margin:0;padding:18px 0;border-top:.5px solid var(--s12);border-bottom:.5px solid var(--s12);text-wrap:balance}
+
+/* Sidebar box */
+.side{background:var(--s2);border:.5px solid var(--s6);border-radius:4px;padding:20px 22px}
+.side dl{margin:0}
+.side dt{font:600 var(--f4)/1.4 var(--sans);margin-top:12px}
+.side dt:first-of-type{margin-top:0}
+.side dd{margin:2px 0 0;font:400 var(--f4)/1.5 var(--sans);color:var(--s11)}
+.side p{font-family:var(--sans);font-size:var(--f4);line-height:1.55}
+.side p:last-child{margin-bottom:0}
+
+/* Funding ladder */
+.ladder{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:end}
+.rung{border-radius:2px;padding:12px 14px;background:var(--s4);font-family:var(--sans)}
+.rung b{display:block;font-size:var(--f4);color:var(--s12)}
+.rung span{display:block;font-size:var(--f4);line-height:1.45;color:var(--s11)}
+.r1{min-height:120px}.r2{min-height:165px}.r3{min-height:210px;background:var(--b4)}.r4{min-height:255px;background:var(--o5)}.r5{min-height:300px}
+.axis{display:flex;justify-content:space-between;font:400 var(--f4)/1.4 var(--sans);color:var(--s11);margin-top:8px;border-top:.5px solid var(--s8);padding-top:6px}
+@media (max-width:700px){.ladder{grid-template-columns:minmax(0,1fr)}.rung{min-height:0!important}.axis{display:none}}
+
+/* Fund flow (vertical) */
+.flow{display:flex;flex-direction:column;gap:6px;font-family:var(--sans)}
+.node{border-radius:2px;padding:12px 14px;border:.5px solid var(--s7);background:var(--s1);font-size:var(--f4);line-height:1.45;color:var(--s11)}
+.node b{display:block;color:var(--s12)}
+.node.hl{background:var(--b3);border-color:var(--b5)}
+.down{text-align:center;color:var(--s9);font-size:var(--f4);line-height:1}
+
+/* Power law bars */
+.stretch{display:flex;flex-direction:column}.stretch .bars{flex:1 1 auto;min-height:280px;height:auto}
+.bars{display:flex;align-items:flex-end;gap:8px;height:280px;border-bottom:.5px solid var(--s8);padding-top:24px}
+.bar{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar i{display:block;width:100%;border-radius:2px 2px 0 0;background:var(--b8)}
+.bar.win i{background:var(--b9)}
+.bar.zero i{height:2px!important;background:var(--s8)}
+.bar span{font:400 var(--f4)/1.3 var(--sans);color:var(--s11);margin-bottom:4px;font-variant-numeric:tabular-nums}
+.barx{display:flex;gap:8px;margin-top:6px}.barx span{flex:1;text-align:center;font:400 var(--f4)/1.3 var(--sans);color:var(--s11)}
+
+/* Calculator */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-family:var(--sans)}
+.calc label{display:block;font-size:var(--f4);color:var(--s11);margin-bottom:6px}
+.calc input{width:100%;font:500 var(--f3) var(--sans);padding:8px 12px;border:.5px solid var(--s8);border-radius:4px;background:#fff;color:var(--s12)}
+.calc input:focus{outline:2px solid var(--b8);outline-offset:1px}
+.split{display:flex;height:44px;border-radius:2px;overflow:hidden;margin-top:18px;font-family:var(--sans)}
+.split div{display:flex;align-items:center;justify-content:center;padding:0 4px;font-size:var(--f4);font-weight:600;white-space:nowrap;overflow:hidden;min-width:0;transition:width .25s ease-out}
+.sf{background:var(--s5);color:var(--s12)} .si{background:var(--b9);color:#fff}
+.legend{display:flex;gap:8px 18px;flex-wrap:wrap;margin-top:10px;font:400 var(--f4)/1.4 var(--sans);color:var(--s11)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:2px;display:inline-block;flex:none}
+.result{margin:12px 0 0;font:500 var(--f4)/1.4 var(--sans);color:var(--s12)}
+@media (max-width:520px){.calc{grid-template-columns:1fr}}
+
+/* Dilution chart */
+.dil{display:grid;grid-template-columns:minmax(120px,200px) minmax(0,1fr) minmax(110px,170px);gap:12px 16px;align-items:center;font-family:var(--sans)}
+.hb{display:flex;height:44px;border-radius:2px;overflow:hidden}
+.hb div{display:flex;align-items:center;justify-content:center;font-size:var(--f4);font-weight:600;white-space:nowrap;overflow:hidden;min-width:0}
+.fo{background:var(--s5);color:var(--s12)} .sd{background:var(--b5);color:var(--b12)} .sa{background:var(--b8);color:var(--b12)} .sb{background:var(--b11);color:#fff}
+.dil .v{font-size:var(--f4);color:var(--s11);line-height:1.4}
+.dil .v b{color:var(--s12)}
+@media (max-width:700px){.dil{grid-template-columns:minmax(0,1fr);gap:6px}.dil .v{margin-bottom:12px}}
+
+/* Stages */
+.stages{display:flex;align-items:stretch;font-family:var(--sans)}
+.stage{flex:1 1 0;min-width:0;padding:14px 16px;background:var(--b3);border-radius:2px;font-size:var(--f4);line-height:1.45;color:var(--s11)}
+.stage b{display:block;color:var(--b12)}
+.gate{flex:0 0 9em;align-self:center;padding:0 10px;font-size:var(--f4);line-height:1.4;color:var(--s11);text-align:center}
+.gate::before{content:"→";display:block;color:var(--s9)}
+@media (max-width:900px){.stages{flex-direction:column}.gate{flex:none;padding:8px 0}.gate::before{content:"↓"}}
+
+/* Five terms */
+.terms{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:var(--gap);row-gap:28px}
+.term{position:relative;font-family:var(--sans);font-size:var(--f4);line-height:1.5;color:var(--s11)}
+.term+.term::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--gap)/-2);border-left:.5px solid var(--s6)}
+.term .n{display:block;font:700 var(--f2)/1 var(--serif);color:var(--b11);margin-bottom:10px}
+.term b{display:block;color:var(--s12);font-size:var(--f3);line-height:1.3;margin-bottom:6px}
+.term i{font-style:normal;color:var(--s12);font-weight:500}
+@media (max-width:1100px){.terms{grid-template-columns:repeat(3,minmax(0,1fr))}.term:nth-child(3n+1)::before{display:none}}
+@media (max-width:700px){.terms{grid-template-columns:minmax(0,1fr)}.term::before{display:none}}
+
+/* Payout bars */
+.hrow{display:grid;grid-template-columns:minmax(130px,210px) minmax(0,1fr);gap:16px;align-items:center;margin-bottom:12px;font-family:var(--sans)}
+.hbar{display:flex;height:44px;border-radius:2px;overflow:hidden}
+.hbar div{display:flex;align-items:center;justify-content:center;font-size:var(--f4);font-weight:600;white-space:nowrap;overflow:hidden;min-width:0}
+.hi{background:var(--b9);color:#fff}.ho{background:var(--s5);color:var(--s12)}
+@media (max-width:520px){.hrow{grid-template-columns:1fr;gap:4px}}
+
+/* LBO */
+.lbo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:end;font-family:var(--sans)}
+.col{display:flex;flex-direction:column;min-width:0}
+.stack{display:flex;flex-direction:column;justify-content:flex-end;height:360px}
+.stack div{display:flex;align-items:center;justify-content:center;font-size:var(--f4);font-weight:600;border-radius:2px;margin-top:2px;overflow:hidden;text-align:center;line-height:1.2}
+.eq{background:var(--o8);color:var(--o12)} .eqg{background:var(--g9);color:#fff} .eqr{background:var(--r9);color:#fff} .debt{background:var(--s5);color:var(--s12)}
+.col .lbl{text-align:center;margin-top:10px}
+
+/* Gain bridge */
+.bridge{display:flex;height:48px;border-radius:2px;overflow:hidden;font-family:var(--sans)}
+.bridge div{display:flex;align-items:center;justify-content:center;font-size:var(--f4);font-weight:600;white-space:nowrap;overflow:hidden;min-width:0;padding:0 6px}
+.bk1{background:var(--o8);color:var(--o12)} .bk2{background:var(--g9);color:#fff} .bk3{background:var(--t9);color:#fff}
+
+/* Numbered list */
+.num{list-style:none;padding:0;margin:0;counter-reset:n}
+.num li{counter-increment:n;padding:14px 0 14px 44px;position:relative;border-top:.5px solid var(--s6)}
+.num li:first-child{border-top:0;padding-top:0}
+.num li::before{content:counter(n);position:absolute;left:0;top:12px;font:700 var(--f2)/1 var(--serif);color:var(--o11)}
+.num li:first-child::before{top:-2px}
+
+/* Table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font:400 var(--f4)/1.5 var(--sans)}
+th,td{text-align:left;padding:10px 12px 10px 0;border-bottom:.5px solid var(--s6);vertical-align:top}
+th{font-weight:600;border-bottom:.5px solid var(--s12)}
+td:first-child{color:var(--s11)}
+
+/* FinTech grid */
+.fgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px var(--gap)}
+.fitem{font-family:var(--sans);font-size:var(--f4);line-height:1.5;color:var(--s11);min-width:0}
+.fitem svg{width:40px;height:40px;display:block;margin-bottom:10px;stroke:var(--t11);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.fitem b{display:block;color:var(--s12);font-size:var(--f3);margin-bottom:4px}
+@media (max-width:1100px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Tips */
+.tips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gap);row-gap:28px}
+.tip{position:relative;color:var(--s11)}
+.tip+.tip::before{content:"";position:absolute;top:0;bottom:0;left:calc(var(--gap)/-2);border-left:.5px solid var(--s6)}
+.tip .n{display:block;font:700 var(--f2)/1 var(--serif);color:var(--s9);margin-bottom:10px}
+.tip b{display:block;font:600 var(--f3)/1.3 var(--sans);margin-bottom:6px;color:var(--s12)}
+@media (max-width:1100px){.tips{grid-template-columns:repeat(2,minmax(0,1fr))}.tip:nth-child(odd)::before{display:none}}
+@media (max-width:700px){.tips{grid-template-columns:minmax(0,1fr)}.tip::before{display:none}}
+
+/* Links */
+.links{list-style:none;padding:0;margin:0;font-family:var(--sans);font-size:var(--f4)}
+.links li{display:flex;gap:12px;align-items:baseline;padding:12px 0;border-bottom:.5px solid var(--s6)}
+.links li:first-child{padding-top:0}
+.tag{font:600 var(--f4)/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;flex:none;width:5.2em}
+.plain{list-style:none;padding:0;margin:0;font-family:var(--sans);font-size:var(--f4);line-height:1.5}
+.plain li{padding:10px 0;border-bottom:.5px solid var(--s6)}
+.plain li:first-child{padding-top:0}
+
+/* Self-check */
+.qs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--gap)}
+details{border-bottom:.5px solid var(--s6);padding:14px 0}
+summary{cursor:pointer;font:500 var(--f3)/1.45 var(--sans);list-style:none;display:flex;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--s9);flex:none;width:1em}
+details[open] summary::before{content:"−"}
+details p{margin:10px 0 0 calc(1em + 12px);color:var(--s11)}
+@media (max-width:900px){.qs{grid-template-columns:minmax(0,1fr)}}
+
+/* Board seats */
+.boards{display:flex;flex-direction:column;gap:22px;font-family:var(--sans)}
+.board{display:flex;gap:6px}
+.seat{flex:1 1 0;min-width:0;min-height:56px;padding:4px;hyphens:auto;overflow-wrap:anywhere;border-radius:2px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:var(--f4);font-weight:600;line-height:1.25}
+@media (max-width:700px){.board{flex-wrap:wrap}.seat{flex:1 1 30%}}
+.st-f{background:var(--s5);color:var(--s12)} .st-i{background:var(--b9);color:#fff} .st-x{background:var(--s1);color:var(--s11);border:.5px solid var(--s8)}
+.board-l{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;font-size:var(--f4)}
+.board-l b{color:var(--s12)} .board-l span{color:var(--s11)}
+/* Dials */
+.dials{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap);row-gap:24px}
+.dials .term::before{display:none}
+.dials .term+.term::before{display:block}
+@media (max-width:900px){.dials{grid-template-columns:minmax(0,1fr)}.dials .term+.term::before{display:none}}
+.num-r td,.num-r th{text-align:right;font-variant-numeric:tabular-nums}
+.num-r td:first-child,.num-r th:first-child{text-align:left}
+/* Ask AI cards */
+.ask{margin-top:14px;padding:10px 12px;background:var(--t3);border-radius:4px;font-family:var(--sans);font-size:13px;line-height:1.45;break-inside:avoid}
+.ask-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:4px}
+.ask-h span{font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--t11)}
+.ask p{margin:0;color:var(--t12)}
+.copy{font:500 13px/1 var(--sans);color:var(--t11);background:none;border:.5px solid var(--t9);border-radius:4px;padding:4px 8px;cursor:pointer}
+.copy:hover{background:var(--s1)}
+.ai-note{font:400 var(--f4)/1.5 var(--sans);color:var(--s11);text-align:center;margin:12px 0 0}
+footer{margin-top:64px;padding-top:12px;border-top:.5px solid var(--s12);font:400 var(--f4)/1.5 var(--sans);color:var(--s11)}
+</style>
+
+<div class="wrap">
+  <div class="mast"><span>FIN30170 Corporate Financial Management</span><span>Week 9 pre-class reading</span></div>
+
+  <header class="hero">
+    <h1>VC, PE and FinTech: who funds a company, and on what terms</h1>
+    <p class="dek">From a founder's savings to a stock market listing, each type of investor brings money and asks for something in return.</p>
+  </header>
+
+  <nav>
+    <a href="#ladder">Funding ladder</a><a href="#vc">Venture capital</a><a href="#deal">Deal terms</a>
+    <a href="#control">Control</a><a href="#pe">Private equity</a><a href="#ft">FinTech</a><a href="#investors">Working with investors</a>
+    <a href="#toolkit">Toolkit</a><a href="#resources">Videos and readings</a><a href="#check">Self-check</a>
+  </nav>
+  <p class="ai-note">Green cards are prompts to explore further with Gemini, which UCD provides to students. Check what it tells you against the textbook.</p>
+
+  <!-- 1 -->
+  <section id="ladder">
+    <div class="g">
+      <div class="c3">
+        <p class="kicker k-n">The big picture</p>
+        <h2>Where a company gets its money</h2>
+        <p class="drop">A new company starts with the founders' own money. As it grows, it needs more cash than the founders have, so it brings in outside investors.</p>
+        <p>Each step up the ladder brings in more money. In return, the new investors ask for a bigger say and better protection.</p>
+        
+      </div>
+      <figure class="c6 ruled">
+        <p class="fig-t">The funding ladder</p>
+        <p class="fig-s">Typical sources of money as a company grows</p>
+        <div class="ladder">
+          <div class="rung r1"><b>Founders</b><span>Own savings, friends and family</span></div>
+          <div class="rung r2"><b>Angels</b><span>Wealthy individuals who back an early idea</span></div>
+          <div class="rung r3"><b>Venture capital</b><span>Funds that invest in young, fast-growing firms</span></div>
+          <div class="rung r4"><b>Private equity</b><span>Funds that buy mature firms, often with borrowed money</span></div>
+          <div class="rung r5"><b>Stock market</b><span>Shares sold to the public in an IPO</span></div>
+        </div>
+        <div class="axis"><span>Idea</span><span>Mature company</span></div>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Explain the difference between an angel investor and a venture capital fund, using a student start-up in Dublin as an example. Keep it simple.</p></div>
+      </figure>
+      <aside class="c3 ruled">
+        <div class="side">
+          <h4>Words to know</h4>
+          <dl>
+            <dt>Equity</dt><dd>Ownership of a company, in the form of shares.</dd>
+            <dt>Valuation</dt><dd>What investors agree the company is worth.</dd>
+            <dt>Dilution</dt><dd>When new shares are issued, each existing owner holds a smaller percentage.</dd>
+            <dt>Exit</dt><dd>How investors get their money back: selling the company, or listing it on a stock market.</dd>
+            <dt>IPO</dt><dd>Initial public offering: the first sale of a company's shares to the public.</dd>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="vc">
+    <div class="sec-head"><p class="kicker k-vc">Venture capital</p><h2>Betting on young companies</h2></div>
+    <div class="g">
+      <div class="c8">
+        <div class="cols2">
+          <p class="drop">Venture capital (VC) is money invested in young companies that could grow very fast, in exchange for a share of the company. Banks rarely lend to these firms: they have few assets to offer as security, little or no profit, and a good chance of failing.</p>
+          <p>A VC investor accepts that risk because the reward from a single success can be huge. In 1999, the VC firms Sequoia Capital and Kleiner Perkins invested $25 million in a small search company called Google. Five years later, Google listed on the stock market.</p>
+          <p>VCs do more than write cheques. They usually join the board, help hire managers, introduce customers and prepare the company for its next round of funding.</p>
+          <p>The money does not belong to the VC firm itself. It comes from a fund, which raises money from large investors and must give it back, with a profit, after about ten years.</p>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>How does the '2 and 20' fee in a venture capital fund work? Use a €100m fund as a simple example, and explain why it pushes VCs towards a few very big wins.</p></div>
+        </div>
+      </div>
+      <figure class="c4 ruled">
+        <p class="fig-t">Where the money comes from</p>
+        <p class="fig-s">How a VC fund works</p>
+        <div class="flow">
+          <div class="node"><b>Investors</b>Pension funds, insurers, university endowments</div>
+          <div class="down" aria-hidden="true">↓</div>
+          <div class="node hl"><b>VC fund</b>Lasts about 10 years. The VC firm keeps about 2% a year as a fee, plus 20% of the profits</div>
+          <div class="down" aria-hidden="true">↓</div>
+          <div class="node"><b>Start-ups</b>Usually 10 to 30 companies</div>
+        </div>
+        <figcaption>When the fund ends, its companies must be sold and the money returned to the investors.</figcaption>
+        
+      </figure>
+    </div>
+
+    <div class="g" style="margin-top:56px;align-items:stretch">
+      <figure class="c7 fig-box stretch">
+        <p class="fig-t">Most start-ups fail</p>
+        <p class="fig-s">Money returned for each €1m invested, ten start-ups in one fund</p>
+        <div class="bars" id="bars"></div>
+        <div class="barx" id="barx"></div>
+        <figcaption>The fund puts in €10m and gets back €29m. One company, J, returns €20m of it. An illustrative example.</figcaption>
+      </figure>
+      <div class="c5 ruled">
+        <blockquote class="pull">A VC fund does not need every company to succeed. It needs one big winner.</blockquote>
+        <p style="margin-top:20px">Only 2 or 3 in 10 early investments succeed (BMAE 14-1). Several lose everything. The fund still does well because one company returns many times its cost and pays for all the losses.</p>
+        <p>This is why VCs look for companies that could become very large, not ones that will grow steadily. A safe, modest business cannot produce the big winner the fund needs.</p>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Why do venture capital returns follow a 'power law'? Explain for a first-year finance student, then tell me what this means for how a VC treats one start-up.</p></div>
+      </div>
+    </div>
+
+    <div class="g" style="margin-top:56px">
+      <div class="c4">
+        <h3>How much of the company does the investor get?</h3>
+        <p>The value of the company before the new money arrives is the <b>pre-money value</b>. Add the new money and you get the <b>post-money value</b>.</p>
+        <p>The investor's share is the new money divided by the post-money value. Try changing the numbers.</p>
+      </div>
+      <figure class="c5 ruled">
+        <p class="fig-t">Valuation calculator</p>
+        <p class="fig-s">Enter amounts in € millions</p>
+        <div class="calc">
+          <div><label for="pre">Value before the investment</label><input id="pre" type="number" min="0" step="0.5" value="8" inputmode="decimal"></div>
+          <div><label for="inv">New investment</label><input id="inv" type="number" min="0" step="0.5" value="2" inputmode="decimal"></div>
+        </div>
+        <div class="split"><div class="sf" id="sf"></div><div class="si" id="si"></div></div>
+        <div class="legend"><span><i class="sf"></i>Existing owners</span><span><i class="si"></i>New investor</span></div>
+        <p class="result" id="calcOut"></p>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>A term sheet says the pre-money valuation 'includes' a 10% option pool. Show step by step how this changes the founders' real pre-money valuation.</p></div>
+      </figure>
+      <aside class="c3 ruled">
+        <div class="side">
+          <h4>The option-pool catch</h4>
+          <p>Start-ups set aside new shares for future staff, called an <b>option pool</b>. Investors often ask for it to be created before they invest.</p>
+          <p>Example: €2m at €8m pre-money, plus a 10% pool. The investor still gets 20%, but the founders keep 70%, not 80%. Their shares are worth €7m, not €8m.</p>
+          <p>So the pool is paid for by the existing owners, not the new investor.</p>
+        </div>
+        
+      </aside>
+    </div>
+
+    <div class="g" style="margin-top:56px">
+      <figure class="c8 fig-box">
+        <p class="fig-t">A smaller slice of a bigger company</p>
+        <p class="fig-s">Who owns an example start-up after each funding round</p>
+        <div class="dil">
+          <div class="lbl"><b>Start</b><br>Founders only</div>
+          <div class="hb"><div class="fo" style="width:100%">Founders 100%</div></div>
+          <div class="v">Worth little yet</div>
+
+          <div class="lbl"><b>Seed</b><br>€1m at €4m pre-money</div>
+          <div class="hb"><div class="fo" style="width:80%">Founders 80%</div><div class="sd" style="width:20%">Seed 20%</div></div>
+          <div class="v">Company €5m<br><b>Founders €4m</b></div>
+
+          <div class="lbl"><b>Series A</b><br>€5m at €15m pre-money</div>
+          <div class="hb"><div class="fo" style="width:60%">Founders 60%</div><div class="sd" style="width:15%">15%</div><div class="sa" style="width:25%">A 25%</div></div>
+          <div class="v">Company €20m<br><b>Founders €12m</b></div>
+
+          <div class="lbl"><b>Series B</b><br>€15m at €45m pre-money</div>
+          <div class="hb"><div class="fo" style="width:45%">Founders 45%</div><div class="sd" style="width:11.25%">11%</div><div class="sa" style="width:18.75%">19%</div><div class="sb" style="width:25%">B 25%</div></div>
+          <div class="v">Company €60m<br><b>Founders €27m</b></div>
+        </div>
+        <div class="legend" style="margin-top:14px"><span><i class="fo"></i>Founders</span><span><i class="sd"></i>Seed investors</span><span><i class="sa"></i>Series A</span><span><i class="sb"></i>Series B</span></div>
+        <figcaption>The founders' share falls from 100% to 45%, but their stake is worth more after every round. An illustrative example.</figcaption>
+      </figure>
+      <div class="c4 ruled">
+        <h3>Money arrives in stages</h3>
+        <p>VCs do not hand over all the money at once. A company raises a round, uses it to reach a goal, then raises the next round at a higher value.</p>
+        <p>Staging protects the investor: if the company misses its goal, the VC can stop funding it.</p>
+        <p>Each new round also <b>dilutes</b> the earlier owners, as the chart shows. Founders accept this because a smaller share of a valuable company is worth more than all of a company that runs out of cash.</p>
+      </div>
+    </div>
+
+    <figure class="fig-box" style="margin-top:48px">
+      <p class="fig-t">The usual funding rounds</p>
+      <p class="fig-s">Each round depends on reaching the goal in between</p>
+      <div class="stages">
+        <div class="stage"><b>Seed</b>Build the first product</div>
+        <div class="gate">The product works</div>
+        <div class="stage"><b>Series A</b>Find paying customers</div>
+        <div class="gate">Sales are growing</div>
+        <div class="stage"><b>Series B and later</b>Expand fast</div>
+        <div class="gate">Large and profitable</div>
+        <div class="stage"><b>Exit</b>Sale to a bigger firm, or an IPO</div>
+      </div>
+    </figure>
+    <div class="g" style="margin-top:28px">
+      <div class="c8"><h3>Seen from the founders' side</h3><p>A goal that is too hard, or due too soon, can stop the next payment and leave the company short of cash. And if later payments are made at today's price, the founders sell shares cheaply even after the company has become more valuable.</p></div>
+      <div class="c4 ruled"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>I am advising a start-up whose VC funding comes in three stages tied to milestones. What makes a milestone fair to founders, and what makes it risky? Give examples of both.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="deal">
+    <div class="sec-head"><p class="kicker k-vc">Deal terms</p><h2>The price is only part of the deal</h2></div>
+    <p>Before investing, a VC sends a <b>term sheet</b>: a short document listing the main conditions of the deal. It is tempting to look only at the valuation, but these five terms decide who gets what when things go well, and when they go badly.</p>
+    <div class="terms" style="margin-top:24px">
+      <div class="term"><span class="n">1</span><b>Who gets paid first</b>If the company is sold, the VC gets its money back before the founders get anything. Called a <i>liquidation preference</i>.</div>
+      <div class="term"><span class="n">2</span><b>Protection against a lower price</b>If the company later sells shares more cheaply, the VC receives extra shares. Called <i>anti-dilution</i>.</div>
+      <div class="term"><span class="n">3</span><b>Board seats and vetoes</b>The VC sits on the board and must agree to big decisions, such as selling the company or raising more money.</div>
+      <div class="term"><span class="n">4</span><b>Vesting</b>Founders earn their shares over several years, so a founder who leaves early can lose some of them.</div>
+      <div class="term"><span class="n">5</span><b>Forced sale</b>If most shareholders agree to sell the company, the others must sell too. Called a <i>drag-along</i>.</div>
+    </div>
+    <div class="g" style="margin-top:8px">
+      <div class="c4"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Explain 'weighted-average anti-dilution' in a venture capital term sheet with a simple numerical example. Who does it protect, and who pays for it?</p></div></div>
+      <div class="c4"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>What is the difference between a 'good leaver' and a 'bad leaver' in a start-up shareholders' agreement? Why do investors care about this?</p></div></div>
+      <div class="c4"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Explain tag-along and drag-along rights in plain English. Give one situation where each one matters.</p></div></div>
+    </div>
+
+    <div class="g" style="margin-top:56px">
+      <div class="c5">
+        <h3>Why "who gets paid first" matters</h3>
+        <p>A VC pays €4m for 40% of a company. The founders own the other 60%. A few years later the company is sold for only €6m.</p>
+        <p>With simple shares, the €6m is split 40:60. If the VC is paid first, it takes its €4m back before the founders see anything. If the VC is paid first <b>and</b> then shares in the rest, it gets even more.</p>
+        <p class="small">Same company, same sale price. The only difference is one line in the term sheet.</p>
+      </div>
+      <figure class="c7 ruled">
+        <p class="fig-t">How €6m is split under three versions of the same deal</p>
+        <p class="fig-s">The VC invested €4m for 40%</p>
+        <div class="hrow"><div class="lbl"><b>Simple shares</b><br>40% of €6m</div>
+          <div class="hbar"><div class="hi" style="width:40%">VC €2.4m</div><div class="ho" style="width:60%">Founders €3.6m</div></div></div>
+        <div class="hrow"><div class="lbl"><b>VC paid first</b><br>The usual term</div>
+          <div class="hbar"><div class="hi" style="width:66.67%">VC €4m</div><div class="ho" style="width:33.33%">Founders €2m</div></div></div>
+        <div class="hrow"><div class="lbl"><b>Paid first, then shares the rest</b><br>€4m + 40% of €2m</div>
+          <div class="hbar"><div class="hi" style="width:80%">VC €4.8m</div><div class="ho" style="width:20%">€1.2m</div></div></div>
+        <div class="legend"><span><i class="hi"></i>VC</span><span><i class="ho"></i>Founders</span></div>
+      </figure>
+    </div>
+
+    <h3 style="margin-top:56px">Three dials on "who gets paid first"</h3>
+    <p>A liquidation preference is not one fixed rule. Three settings decide how much the investor takes, and each one can be negotiated.</p>
+    <div class="dials" style="margin-top:20px">
+      <div class="term"><span class="n">A</span><b>The multiple</b>At 1×, the investor gets its money back once before the founders. At 2×, it gets twice its money first.</div>
+      <div class="term"><span class="n">B</span><b>Participation</b>After being paid first, does the investor stop there, or also share in what is left? Sharing as well is sometimes called <i>double dipping</i>.</div>
+      <div class="term"><span class="n">C</span><b>Conversion</b>An investor that does not participate can instead swap its preferred shares for ordinary shares. It does this when the company sells for a lot, because its percentage is then worth more.</div>
+    </div>
+    <div class="g" style="margin-top:36px">
+      <div class="c5">
+        <p>Some deals also add a yearly dividend, for example 8% a year, that builds up and is paid on top when the company is sold.</p>
+        <p>The table shows the same €4m investment for 40% under three settings. The dials matter most when the sale price is low. When the price is high, the investor's percentage matters more.</p>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Build a simple table comparing a 1× non-participating liquidation preference with a 2× participating one plus 8% a year. Show what founders get at a low, medium and high sale price.</p></div>
+      </div>
+      <figure class="c7 ruled tbl">
+        <p class="fig-t">What the VC receives at three sale prices</p>
+        <p class="fig-s">€4m invested for 40% of the company</p>
+        <table class="num-r">
+          <tr><th>Setting</th><th>Sold for €6m</th><th>Sold for €10m</th><th>Sold for €30m</th></tr>
+          <tr><td>1×, no participation</td><td>€4m</td><td>€4m</td><td>€12m <span class="small">(converts)</span></td></tr>
+          <tr><td>2×, no participation</td><td>€6m</td><td>€8m</td><td>€12m <span class="small">(converts)</span></td></tr>
+          <tr><td>1×, participating</td><td>€4.8m</td><td>€6.4m</td><td>€14.4m</td></tr>
+        </table>
+        <figcaption>The founders receive the sale price minus the VC's amount. Simplified: ignores dividends and other shareholders.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 3b -->
+  <section id="control">
+    <div class="sec-head"><p class="kicker k-vc">Control</p><h2>Owning shares is not the same as running the company</h2></div>
+    <div class="g">
+      <div class="c4">
+        <p class="drop">Control comes from three places: votes at shareholder meetings, seats on the board, and vetoes written into the deal.</p>
+        <p>The board hires and fires the chief executive (CEO) and approves big decisions. So a founder with 40% of the shares can still run the company if the founders hold most board seats and the CEO job. A founder with 60% can lose control if investors hold the board or key vetoes.</p>
+        <p>As a company grows, investors often want an experienced CEO from outside. Many founders accept this, but it can mean losing the top job in the company they started.</p>
+        
+      </div>
+      <figure class="c5 ruled">
+        <p class="fig-t">Same five seats, different control</p>
+        <p class="fig-s">Who holds each seat on a five-person board</p>
+        <div class="boards">
+          <div>
+            <div class="board-l"><b>Board A</b><span>Founders hold 3 of 5</span></div>
+            <div class="board"><div class="seat st-f">Founder</div><div class="seat st-f">Founder</div><div class="seat st-f">CEO (a founder)</div><div class="seat st-i">Investor</div><div class="seat st-x">Independent</div></div>
+          </div>
+          <div>
+            <div class="board-l"><b>Board B</b><span>Founders hold 1 of 5</span></div>
+            <div class="board"><div class="seat st-f">Founder</div><div class="seat st-i">Investor</div><div class="seat st-i">Investor</div><div class="seat st-i">CEO (investor's choice)</div><div class="seat st-x">Independent</div></div>
+          </div>
+        </div>
+        <div class="legend" style="margin-top:14px"><span><i class="st-f"></i>Founders' side</span><span><i class="st-i"></i>Investor's side</span><span><i class="st-x"></i>Neutral outsider</span></div>
+        <figcaption>When the two sides are close, the independent director often decides. Who chooses that person matters.</figcaption>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>What veto rights do venture capital investors usually ask for in a term sheet? Which ones limit founders the most in day-to-day running of the company?</p></div>
+      </figure>
+      <aside class="c3 ruled">
+        <div class="side">
+          <h4>Two kinds of shares</h4>
+          <p>Some founders keep control with <b>dual-class shares</b>: their shares carry more votes each than the shares sold to investors.</p>
+          <p>Google (Alphabet) and Facebook (Meta) both use this structure, so their founders kept voting control long after selling most of the company.</p>
+          <p>Investors do not always accept it, because it limits their say.</p>
+        </div>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>What are dual-class shares? Give the arguments for and against them from the point of view of founders and of investors.</p></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="pe">
+    <div class="sec-head"><p class="kicker k-pe">Private equity</p><h2>Buying whole companies with borrowed money</h2></div>
+    <div class="g">
+      <div class="c9">
+        <div class="cols3">
+          <p class="drop">Private equity (PE) funds usually buy <b>whole, mature companies</b> that already make a profit. They run them for a few years, try to make them more valuable, and then sell them.</p>
+          <p>A PE fund pays mostly with borrowed money, so the deal is called a <b>leveraged buyout</b> (LBO). The company itself carries the loans and repays them from its own cash.</p>
+          <p>Like a VC fund, a PE fund raises money from pension funds and other large investors, lasts about ten years, and charges a fee plus a share of the profits.</p>
+          <p>Borrowing makes the gains bigger when things go well, and the losses bigger when they do not. The chart below shows both cases.</p>
+          <p>A typical buyout has three steps: <b>buy</b> the company, <b>improve</b> it over three to seven years, then <b>sell</b> it to another firm, to another fund, or on the stock market.</p>
+          
+        </div>
+      </div>
+      <aside class="c3 ruled">
+        <div class="side">
+          <h4>When borrowing goes wrong</h4>
+          <p>In 2007, the PE firms KKR and TPG, with Goldman Sachs, bought the Texas power company TXU for a record $32 billion, mostly with debt. Then the shale gas boom pushed gas and electricity prices down. The company could not carry its loans and went bankrupt in 2014 (BMAE 33-1).</p>
+        </div>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Explain a leveraged buyout by comparing it to buying a house with a large mortgage. Where does the comparison work, and where does it break down?</p></div>
+      </aside>
+    </div>
+
+    <div class="g" style="margin-top:56px">
+      <figure class="c6 fig-box">
+        <p class="fig-t">How borrowing raises both gains and losses</p>
+        <p class="fig-s">A fund buys a company for €100m: €40m of its own money, €60m borrowed</p>
+        <div class="lbo">
+          <div class="col"><div class="stack"><div class="eq" style="height:96px">Fund €40m</div><div class="debt" style="height:144px">Debt €60m</div></div><div class="lbl"><b>Buy for €100m</b></div></div>
+          <div class="col"><div class="stack"><div class="eqg" style="height:288px">Fund €120m</div><div class="debt" style="height:72px">Debt €30m</div></div><div class="lbl"><b>Goes well: worth €150m</b><br>Fund's money × 3</div></div>
+          <div class="col"><div class="stack"><div class="eqr" style="height:24px">€10m</div><div class="debt" style="height:144px">Debt €60m</div></div><div class="lbl"><b>Goes badly: worth €70m</b><br>Fund loses 75%</div></div>
+        </div>
+        <figcaption>Debt is paid first, so the fund keeps whatever is left. Simplified example that ignores interest.</figcaption>
+      </figure>
+      <div class="c6 ruled">
+        <h3>Where the fund's gain comes from</h3>
+        <p>In the good case the fund turns €40m into €120m. The €80m gain has two sources.</p>
+        <figure style="margin:20px 0 36px">
+          <div class="bridge"><div class="bk1" style="width:33.3%">Start €40m</div><div class="bk2" style="width:41.7%">Growth +€50m</div><div class="bk3" style="width:25%">Debt repaid +€30m</div></div>
+          <div class="legend"><span><i class="bk1"></i>Fund's own money</span><span><i class="bk2"></i>Company grew from €100m to €150m</span><span><i class="bk3"></i>Loans fell from €60m to €30m</span></div>
+        </figure>
+        <h3>How PE tries to add value</h3>
+        <ol class="num">
+          <li><b>Pressure to perform.</b> Large loan repayments push managers to cut waste and generate cash.</li>
+          <li><b>Managers as owners.</b> Managers own part of the company, so they gain when it does well. Kaplan (1989) found operating profits rose 24% on average in the three years after management buyouts.</li>
+          <li><b>Close supervision.</b> A few owners watch the company closely, unlike thousands of small shareholders.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="g" style="margin-top:56px">
+      <div class="c4">
+        <h3>VC and PE side by side</h3>
+        <p>Both raise money in funds and both plan to sell within a few years. The difference is the kind of company they buy and how much they borrow.</p>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Why do private equity funds borrow far more than venture capital funds? Explain using the kind of companies each one buys.</p></div>
+      </div>
+      <div class="c8 ruled tbl">
+        <table>
+          <tr><th></th><th>Venture capital</th><th>Private equity</th></tr>
+          <tr><td>Buys</td><td>Part of a young company</td><td>All of a mature company</td></tr>
+          <tr><td>Borrowing</td><td>Little or none</td><td>A lot</td></tr>
+          <tr><td>Makes money from</td><td>A few big winners</td><td>Running companies better and repaying debt</td></tr>
+          <tr><td>Biggest risk</td><td>The start-up fails</td><td>The company cannot repay its loans</td></tr>
+          <tr><td>Sells by</td><td>Selling to a bigger firm, or an IPO</td><td>Selling to a firm or another fund, or an IPO</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="ft">
+    <div class="sec-head"><p class="kicker k-ft">FinTech</p><h2>New technology, old financial services</h2></div>
+    <div class="g">
+      <div class="c3">
+        <p class="drop">FinTech means using new technology to offer financial services such as payments, loans and investing.</p>
+        <p>It has grown because of three things: more data about customers, artificial intelligence, and cheap cloud computing (BMAE 13-7).</p>
+        <p>Most FinTech start-ups are funded by venture capital, so everything in the VC section applies to them too.</p>
+        
+      </div>
+      <div class="c6 ruled">
+        <div class="fgrid">
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M10 18.5h4"/></svg><b>Payments</b>Paying by card or phone app instead of cash. In Sweden, cash is barely 2% of the value of all payments.</div>
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="8" r="3"/><circle cx="18" cy="8" r="3"/><path d="M2.5 19c.5-3 2-4.5 3.5-4.5S9 16 9.5 19M14.5 19c.5-3 2-4.5 3.5-4.5s3 1.5 3.5 4.5M10 8h4"/></svg><b>Online lending</b>Websites that match borrowers with lenders, without a bank.</div>
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6" r="2.5"/><circle cx="5" cy="13" r="2"/><circle cx="19" cy="13" r="2"/><circle cx="12" cy="19" r="2"/><path d="M12 8.5V17M7 13h3M14 13h3"/></svg><b>Crowdfunding</b>Many people each invest a small amount in a start-up.</div>
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 15l3-3 3 2 4-5"/></svg><b>Credit scoring</b>Using data and AI to judge whether someone will repay a loan.</div>
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="9" width="5" height="6" rx="1"/><rect x="9.5" y="9" width="5" height="6" rx="1"/><rect x="16.5" y="9" width="5" height="6" rx="1"/><path d="M7.5 12h2M14.5 12h2"/></svg><b>Blockchain</b>A shared record kept on many computers that cannot be changed later.</div>
+          <div class="fitem"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 7.5v9M13 7.5v9M9 9.5h4.5a2 2 0 010 4H9M9 13.5h5a2 2 0 010 4H9"/></svg><b>Crypto</b>Digital money such as Bitcoin. Prices swing widely and many projects fail.</div>
+        </div>
+      </div>
+      <aside class="c3 ruled">
+        <div class="side">
+          <h4>An Irish example</h4>
+          <p><b>Stripe</b> handles online card payments for millions of businesses. It was founded in 2010 by brothers Patrick and John Collison from County Tipperary.</p>
+          <p>Its early backers included the VC firms Sequoia Capital and Andreessen Horowitz. Like many large FinTech firms, it has stayed private for years, funded by VC rounds instead of the stock market.</p>
+        </div>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Pick one European FinTech company. Explain how it makes money, who funded it in its early rounds, and what risks its investors took.</p></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="investors">
+    <div class="sec-head"><p class="kicker k-n">Advice for founders</p><h2>Working with investors</h2></div>
+    <div class="g" style="margin-bottom:48px">
+      <div class="c5">
+        <h3>Not all money is equal</h3>
+        <p>Two investors can offer the same amount at the same valuation and still be very different partners. Founders compare:</p>
+        <ul class="plain" style="font-size:var(--f3);font-family:var(--serif)">
+          <li><b>Reputation.</b> A well-known VC makes it easier to hire, win customers and raise the next round.</li>
+          <li><b>Help beyond money.</b> Contacts, advice and experience, often called <i>smart money</i>.</li>
+          <li><b>Track record.</b> Their past deals, and what founders they backed say about them.</li>
+          <li><b>Other offers.</b> Getting term sheets from several investors shows what the company is really worth and strengthens the founders' hand.</li>
+          <li><b>Exclusivity.</b> Some term sheets ban talks with other investors for a set period, and a few clauses bind as soon as it is signed. Read those parts first.</li>
+        </ul>
+        
+      </div>
+      <div class="c7 ruled tbl">
+        <h3>Every term is a trade</h3>
+        <p>Good negotiators rarely just say no. They give something the other side values and ask for something in return.</p>
+        <table>
+          <tr><th>If the founders accept</th><th>They might ask for</th></tr>
+          <tr><td style="color:var(--s12)">A lower valuation</td><td>Simpler terms, such as no participation</td></tr>
+          <tr><td style="color:var(--s12)">An investor seat on the board</td><td>A founder majority, or choosing the independent director together</td></tr>
+          <tr><td style="color:var(--s12)">Money paid in stages</td><td>Goals that are realistic and clearly measurable</td></tr>
+          <tr><td style="color:var(--s12)">Vesting on their shares</td><td>Clear, fair rules for a founder who leaves for good reasons</td></tr>
+        </table>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>What is an exclusivity (no-shop) clause in a venture capital term sheet? What should first-time founders check before signing one?</p></div>
+        <div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Act as an experienced negotiator for start-up founders. For each of these VC terms, suggest something the founders could offer in return for a better deal: liquidation preference, board seats, milestones, vesting.</p></div>
+      </div>
+    </div>
+    <div class="tips">
+      <div class="tip"><span class="n">1</span><b>Read the whole deal, not just the price.</b>Terms such as who gets paid first can matter more than the valuation.</div>
+      <div class="tip"><span class="n">2</span><b>Ask why the investor wants each term.</b>Then suggest another way to give them the same protection.</div>
+      <div class="tip"><span class="n">3</span><b>Keep other options open.</b>You negotiate better when you can walk away.</div>
+      <div class="tip"><span class="n">4</span><b>Remember it is a long relationship.</b>A good investor brings advice and contacts, not just money.</div>
+    </div>
+  </section>
+
+  <!-- 6b -->
+  <section id="toolkit">
+    <div class="sec-head"><p class="kicker k-n">A toolkit</p><h2>Five questions to ask about any term sheet</h2></div>
+    <div class="terms">
+      <div class="term"><span class="n">1</span><b>Money</b>How much comes in, at what valuation, and what share do the founders really keep after the option pool?</div>
+      <div class="term"><span class="n">2</span><b>Control</b>Who holds the votes, the board seats, the vetoes and the CEO job, now and after later rounds?</div>
+      <div class="term"><span class="n">3</span><b>The downside</b>If the company is sold for a low price, who gets what? Work through a few sale prices.</div>
+      <div class="term"><span class="n">4</span><b>The future</b>How do the money stages, goals and terms affect the next round, hiring and the exit?</div>
+      <div class="term"><span class="n">5</span><b>The relationship</b>What does this investor bring besides money, and what could the founders offer in return for better terms?</div>
+    </div>
+    <div class="g" style="margin-top:8px">
+      <div class="c6"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Act as an experienced start-up lawyer. I will paste one clause from a term sheet. Explain it in plain English, say whether it favours the founders or the investor, and list two questions I should ask about it.</p></div></div>
+      <div class="c6"><div class="ask"><div class="ask-h"><span>Ask Gemini</span><button type="button" class="copy">Copy</button></div><p>Here is my group's view on a term sheet. Play the venture capitalist and challenge our three weakest arguments, then tell us what evidence would make them stronger.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="resources">
+    <div class="sec-head"><p class="kicker k-n">Before class</p><h2>Videos and readings</h2></div>
+    <div class="g">
+      <div class="c5">
+        <h4>Videos</h4>
+        <ul class="links">
+          <li><span class="tag k-vc">VC</span><a href="https://www.youtube.com/watch?v=U-FLEO0Ndrg" target="_blank" rel="noopener">Venture capital explained</a></li>
+          <li><span class="tag k-vc">VC</span><a href="https://www.youtube.com/watch?v=bjtI17ONjZQ" target="_blank" rel="noopener">How venture capital works</a></li>
+          <li><span class="tag k-pe">PE</span><a href="https://www.youtube.com/watch?v=MjlxxMzq0Zc" target="_blank" rel="noopener">Leveraged Buy Outs Explained Simply</a></li>
+          <li><span class="tag k-pe">PE</span><a href="https://www.youtube.com/watch?v=he8wslZLWik" target="_blank" rel="noopener">Private Equity Explained: How It Transformed Corporate America</a></li>
+          <li><span class="tag k-ft">FinTech</span><a href="https://www.youtube.com/watch?v=ja1w2nbJPNA" target="_blank" rel="noopener">CNA Explains: What is fintech?</a></li>
+        </ul>
+      </div>
+      <div class="c3 ruled">
+        <h4>Textbook</h4>
+        <p class="small" style="color:var(--s12)">Brealey, Myers, Allen and Edmans, <i>Principles of Corporate Finance</i>, 14th ed. (2022), McGraw Hill</p>
+        <ul class="plain">
+          <li>14-1 Venture Capital, pp. 399–404</li>
+          <li>33-1 Leveraged Buyouts and 33-2 The Private-Equity Market, pp. 950–961</li>
+          <li>13-7 The Fintech Revolution, pp. 391–394</li>
+        </ul>
+      </div>
+      <div class="c4 ruled">
+        <h4>Further reading</h4>
+        <ul class="plain">
+          <li>Feld, B. and Mendelson, J. <i>Venture Deals: Be Smarter Than Your Lawyer and Venture Capitalist</i>. Wiley.</li>
+          <li>Kaplan, S. N. and Strömberg, P. (2009). Leveraged buyouts and private equity. <i>Journal of Economic Perspectives</i>, 23(1), 121–146.</li>
+          <li>Gornall, W. and Strebulaev, I. A. (2020). Squaring venture capital valuations with reality. <i>Journal of Financial Economics</i>, 135(1), 120–143.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="check">
+    <div class="sec-head"><p class="kicker k-n">Test yourself</p><h2>Self-check</h2></div>
+    <div class="qs">
+      <div>
+        <details><summary>A VC invests €3m in a company worth €9m before the deal. What share does it get?</summary><p>The company is worth €12m after the deal, so the VC owns €3m ÷ €12m = 25%.</p></details>
+        <details><summary>Why do VCs invest in stages?</summary><p>So they can stop funding a company that is not reaching its goals.</p></details>
+        <details><summary>How can a VC fund make money if most start-ups fail?</summary><p>One or two big winners can return more than all the losses combined.</p></details>
+        <details><summary>Can founders with less than half the shares still control the company?</summary><p>Yes, if they hold most board seats, the CEO job, or shares with extra votes.</p></details>
+      </div>
+      <div>
+        <details><summary>An option pool is created just before a VC invests. Who pays for it?</summary><p>The existing owners. The new shares dilute them, while the investor's percentage is fixed by the deal.</p></details>
+        <details><summary>Why is a leveraged buyout risky?</summary><p>The debt must be repaid first. If the company's value falls, the fund's share can shrink to almost nothing.</p></details>
+        <details><summary>Two investors both value a company at €10m. Why might the founders prefer one?</summary><p>The other terms differ, such as who gets paid first, board control and vesting, and one investor may bring more help.</p></details>
+        <details><summary>A founder's share falls from 80% to 60% after a new round. Is the founder worse off?</summary><p>Not necessarily. If the company is now worth much more, a smaller share can be worth more money.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer>FIN30170 Corporate Financial Management, University College Dublin. Examples are simplified for teaching.</footer>
+</div>
+
+<script>
+(function(){
+  // Power-law bars (€m returned per €1m invested)
+  var r=[0,0,0,0,1,1,1,3,3,20], max=20, bars=document.getElementById('bars'), bx=document.getElementById('barx');
+  r.forEach(function(v,k){
+    var d=document.createElement('div'); d.className='bar'+(v===0?' zero':'')+(v===20?' win':'');
+    d.innerHTML='<span>€'+v+'m</span><i style="height:'+(v/max*100)+'%"></i>'; bars.appendChild(d);
+    var s=document.createElement('span'); s.textContent=String.fromCharCode(65+k); bx.appendChild(s);
+  });
+  // Calculator
+  var pre=document.getElementById('pre'), inv=document.getElementById('inv'), out=document.getElementById('calcOut'),
+      sf=document.getElementById('sf'), si=document.getElementById('si');
+  function f(x){return String(Math.round(x*100)/100);}
+  function upd(){
+    var p=parseFloat(pre.value)||0, i=parseFloat(inv.value)||0, post=p+i;
+    if(post<=0){out.textContent='Enter values above zero.';sf.style.width='100%';si.style.width='0';return;}
+    var s=i/post*100;
+    sf.style.width=(100-s)+'%'; si.style.width=s+'%';
+    sf.textContent=(100-s).toFixed(1)+'%'; si.textContent=s>=8?s.toFixed(1)+'%':'';
+    out.textContent='Value after the investment: €'+f(post)+'m. The new investor owns '+s.toFixed(1)+'%.';
+  }
+  pre.addEventListener('input',upd); inv.addEventListener('input',upd); upd();
+  // Copy prompt buttons
+  document.querySelectorAll('.ask').forEach(function(card){
+    var b=card.querySelector('.copy'), t=card.querySelector('p');
+    b.addEventListener('click',function(){
+      function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy';},1500);}
+      function sel(){var r=document.createRange();r.selectNodeContents(t);var s=getSelection();s.removeAllRanges();s.addRange(r);}
+      try{navigator.clipboard.writeText(t.textContent).then(done,sel);}catch(e){sel();}
+    });
+  });
+})();
+</script>
+</body></html>
